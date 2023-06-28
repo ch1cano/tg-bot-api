@@ -4,6 +4,7 @@ const text = require("./const"); //
 const textTest = require("./const");
 const openWeatherMapApiKey = "4b6f9e8b22638e50b8623881ed435161"; // API погоды
 const request = require("request"); // Библиотека request используется для выполнения запроса к OpenWeatherMap API.
+const { Telegraf, Markup } = require("telegraf");
 
 const bot = new Telegraf(process.env.BOT_TOKEN); // Создание нового экземпляра Telegraf-бота.
 bot.start((ctx) => ctx.reply(`Hello ${ctx.message.from.first_name ? ctx.message.from.first_name : "stranger"}!`));
