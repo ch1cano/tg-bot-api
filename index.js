@@ -7,8 +7,16 @@ const request = require("request"); // Библиотека request исполь
 const { Telegraf, Markup } = require("telegraf");
 
 const bot = new Telegraf(process.env.BOT_TOKEN); // Создание нового экземпляра Telegraf-бота.
-bot.start((ctx) => ctx.reply(`Hello ${ctx.message.from.first_name ? ctx.message.from.first_name : "stranger"}!`));
+bot.start((ctx) => ctx.reply(` 😉 Hello ${ctx.message.from.first_name ? ctx.message.from.first_name : "stranger"}!`));
 bot.help((ctx) => ctx.reply(text.commands));
+
+bot.command("favorites", async (ctx) => {
+  try {
+    await ctx.replyWithHTML("<b>favorites</b>", Markup.inlineKeyboard([[Markup.button.callback("Favorites cityes", "btn_3")]]));
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 bot.command("settings", async (ctx) => {
   try {
@@ -20,6 +28,8 @@ bot.command("settings", async (ctx) => {
     console.error(e);
   }
 });
+
+// bot.on("btn_3");
 
 bot.on("message", (msg) => {
   const chatId = msg.chat.id;
@@ -34,7 +44,7 @@ bot.on("message", (msg) => {
 function getCurrentWeather(cityName, callback) {
   const encodeCityName = encodeURIComponent(cityName); // Декодируем кирилицу
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${openWeatherMapApiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&lang=ru&appid=${openWeatherMapApiKey}`;
   console.log(cityName);
   console.log(url);
   request(url, function (error, response, body) {
@@ -56,7 +66,9 @@ function getCurrentWeather(cityName, callback) {
     else if (weatherType >= 801 && weatherType <= 804) emojiIcon = "⛅";
     else if (weatherType == 800) emojiIcon = "☀️";
 
-    const text = `Погода в ${cityName}: ${emojiIcon} ${temp}°С`;
+    // bot.telegram.sendMessage(chatId, "loading...");
+
+    const text = `⛅ Погода в ${cityName}: ${emojiIcon} ${temp}°С`;
 
     callback(text);
   });
@@ -94,6 +106,7 @@ const addActionBotText = (textTest) => {
 
 addActionBot("btn_1", "./img/img1.png", text.text);
 addActionBotText("btn_2", textTest.textTest);
+// addActionFavoritesCityes("btn_3");
 
 bot.launch();
 
