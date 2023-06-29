@@ -10,6 +10,9 @@ const text = `
 const textTest = `
 Тестовая кнопка 2`;
 
+const favorites = `Избранные города:`;
+
 module.exports.commands = commands;
 module.exports.text = text;
 module.exports.textTest = textTest;
+module.exports.favorites = favorites;

@@ -2,6 +2,7 @@ const { message } = require("telegraf/filters"); // Выполняется им�
 require("dotenv").config(); //  Считывает переменные окружения из файла `.env`.
 const text = require("./const"); //
 const textTest = require("./const");
+const favorites = require("./const");
 const openWeatherMapApiKey = "4b6f9e8b22638e50b8623881ed435161"; // API погоды
 const request = require("request"); // Библиотека request используется для выполнения запроса к OpenWeatherMap API.
 const { Telegraf, Markup } = require("telegraf");
@@ -104,9 +105,21 @@ const addActionBotText = (textTest) => {
   });
 };
 
+const addActionFavorites = (favorites) => {
+  bot.action(favorites, async (ctx) => {
+    try {
+      await ctx.replyWithHTML(favorites, {
+        disable_web_page_preview: true, // Отключение отображения картинки в ссылке
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  });
+};
+
 addActionBot("btn_1", "./img/img1.png", text.text);
 addActionBotText("btn_2", textTest.textTest);
-// addActionFavoritesCityes("btn_3");
+addActionFavorites("btn_3", favorites.favorites);
 
 bot.launch();
 
